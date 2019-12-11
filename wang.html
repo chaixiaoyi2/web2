@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>轮播图</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="animate.js"></script>
+	</head>
+<body>
+  <div class="head">
+    <div class="img"><img src="images/a15.png" alt=""></div>
+	<div class="head1" id="head1">
+		<div class="warning" id="warning"><p style="color:red;font-size: 13px">[温馨提示]最近有不少不法分子在网上骗人，请大家注意!!!</p></div>
+  </div>
+	</div>
+      <div class="box" id="box">
+      	  <div class="slider" id="slider">
+      		<div class="slide"><img src="images/b5.png" alt=""></div>
+      		<div class="slide"><img src="images/b1.png" alt=""></div>
+      		<div class="slide"><img src="images/b2.png" alt=""></div>
+      		<div class="slide"><img src="images/b3.png" alt=""></div>
+      		<div class="slide"><img src="images/b4.png" alt=""></div>
+      		<div class="slide"><img src="images/b5.png" alt=""></div>
+      		<div class="slide"><img src="images/b1.png" alt=""></div>
+      	</div>
+      	<span id="left">< </span>
+      	<span id="right">></span>
+      	<ul class="nav" id="nav">
+      		<li class="active">1</li>
+      		<li>2</li>
+      		<li>3</li>
+      		<li>4</li>
+      		<li>5</li>
+      	</ul>
+      </div>
+      <script>
+       function getStyle(obj, style){
+            if(obj.currentStyle){
+                return obj.currentStyle[style];
+             } else {
+                  return getComputedStyle(obj)[style];
+             }
+         }
+         var warning = document.getElementById("warning");
+         onload = function(){
+          var a = setInterval(function(){
+            var now = parseInt(getStyle(warning,"right"));
+            warning.style.right = now+1+"px";
+            if(now>=800){
+              warning.style.right=-270+"px";
+            }
+          },18)
+         }
+
+        var box = document.getElementById('box');
+      	var oNavlist = document.getElementById('nav').children;
+      	var slider = document.getElementById('slider');
+      	var left = document.getElementById('left');
+      	var right = document.getElementById('right');
+      	var index = 1;
+      	var timer;
+      	var isMoving = false;
+        function next(){
+        	if(!isMoving){
+        		isMoving = true;
+        	    index++;
+        	    navChange();
+        	    animate(slider,{left:-1200*index},function(){
+        		   if(index === 6){
+        			  slider.style.left = "-1200px";
+        			  index = 1;
+        		}
+        		isMoving = false;
+        	});
+        }
+    }
+        function prev(){
+        	if(!isMoving){
+        		isMoving = true;
+        	    index--;
+        	    navChange();
+        	    animate(slider,{left:-1200*index},function(){
+        		   if(index === 0){
+        			  slider.style.left = "-6000px";
+        			  index = 5;
+        		}
+        		isMoving = false;
+        	});
+        }
+    }
+      	var timer = setInterval(next,3000);
+        box.onmouseover = function(){
+      		animate(left,{opacity:50});
+      		animate(right,{opacity:50});
+      		clearInterval(timer)
+      	}
+      	box.onmouseout = function(){
+      		animate(left,{opacity:0});
+      		animate(right,{opacity:0});
+      		timer = setInterval(next, 3000);
+      	}
+      	 right.onclick = next;
+      	 left.onclick = prev;
+      	for(var i = 0;i < oNavlist.length;i++){
+      		oNavlist[i].idx = i;
+      		oNavlist[i].onclick = function(){
+      			index = this.idx + 1;
+      			navChange();
+      			animate(slider,{left:-1200*index});
+      		}
+      	}
+      	function navChange(){
+      		for(var i = 0;i<oNavlist.length;i++){
+      			oNavlist[i].className = '';
+      		}
+      		if(index===6){
+      			oNavlist[0].className = 'active';
+      		}else if(index===0){
+                oNavlist[4].className = 'active';
+      		}else{
+                oNavlist[index-1].className = 'active';
+      		}
+      		
+      	}
+       </script>
+  </body>
+</html>    	
+
+
